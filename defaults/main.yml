@@ -1,11 +1,5 @@
 ---
-jvm_sdkman_install: true
+logfaces_client_install: true
+logfaces_client_version: 4.3.0 
 
-jvm_intellij_install: true
-jvm_intellij_version: 2016.2.5
-jvm_intellij_build: 162.2228.15
-jvm_intellij_share_jdk: true
-
-jvm_charles_install: true
-jvm_charles_version: 4.0.1
 

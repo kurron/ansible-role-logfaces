@@ -1,7 +1,7 @@
 Role Name
 =========
 
-Installation of tools than any self-respecting JVM developer loves and needs.
+Installation of client and server of the [logFaces](http://www.moonlit-software.com/) distributed logging aggregator.
 
 Requirements
 ------------
@@ -11,13 +11,7 @@ TODO
 Role Variables
 --------------
 
-* jvm_sdkman_install: true
-* jvm_intellij_install: true
-* jvm_intellij_version: 2016.2.4
-* jvm_intellij_build: 162.2032.8
-* jvm_intellij_share_jdk: true
-* jvm_charles_install: true
-* jvm_charles_version: 4.0.1
+TODO
 
 Dependencies
 ------------
@@ -30,7 +24,7 @@ Example Playbook
 ```
 - hosts: servers
   roles:
-      - { role: kurron.jvm-developer, jvm_charles_install: true }
+      - { role: kurron.logfaces, jvm_charles_install: true }
 ```
 
 License

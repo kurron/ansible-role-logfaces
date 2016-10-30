@@ -1,6 +1,6 @@
 galaxy_info:
   author: Ronald D. Kurr
-  description: IDEs and command-line tools for JVM developers.
+  description: Client and server for the logFaces log aggreator.
   company: jvmguy.com
 
   license: Apache 2
@@ -32,19 +32,9 @@ galaxy_info:
 
   galaxy_tags:
       - development
-      - jetbrains
-      - intellij
-      - charles
-      - charles-proxy
-      - sdkman
-      - groovy
-      - grails
-      - java
-      - scala
-      - clojure
-      - ant
-      - maven
-      - gradle
+      - logfaces
+      - operations
+      - logging
 
 dependencies:
     - { role: kurron.jdk }
