@@ -1,0 +1,103 @@
+---
+- name: Download SDKMAN!
+  become: no
+  get_url:
+      url: "https://get.sdkman.io"
+      dest: "{{ansible_user_dir}}/{{base_download_directory}}/sdkman-install.sh"
+      mode: 0554
+  when: jvm_sdkman_install
+
+- name: Run SDKMAN! Installer
+  become: no
+  shell: "{{ansible_user_dir}}/{{base_download_directory}}/sdkman-install.sh"
+  args:
+      creates: "{{ansible_user_dir}}/.sdkman/etc/config"
+  when: jvm_sdkman_install
+
+- name: Download IntelliJ IDEA Tarball
+  become: no
+  get_url:
+      url: "https://download.jetbrains.com/idea/ideaIU-{{ jvm_intellij_version }}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{base_download_directory}}/idea-{{ jvm_intellij_version }}.tar.gz"
+      mode: 0444
+  when: jvm_intellij_install
+
+- name: Uncompress IntelliJ IDEA Tarball
+  become: no
+  unarchive:
+      src: "{{ansible_user_dir}}/{{base_download_directory}}/idea-{{ jvm_intellij_version }}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{base_software_directory}}"
+      copy: no
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      mode: 0555
+      creates: "{{ansible_user_dir}}/{{base_software_directory}}/idea-IU-{{jvm_intellij_build}}/build.txt"
+  when: jvm_intellij_install
+
+- name: Create Softlink To IntelliJ IDEA
+  become: no
+  file:
+      src: "{{ansible_user_dir}}/{{base_software_directory}}/idea-IU-{{jvm_intellij_build}}"
+      dest: "{{ansible_user_dir}}/{{base_software_directory}}/idea"
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      state: link
+  when: jvm_intellij_install
+
+- name: Create Desktop Icon For IntelliJ IDEA
+  become: no
+  template:
+      src: "templates/idea.desktop.j2"
+      dest: "{{ansible_user_dir}}/Desktop/idea.desktop"
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      mode: 0755
+  when: jvm_intellij_install
+
+- name: Set Global Environment To Have IntelliJ Use Shared JDK
+  become: yes
+  template:
+      src: "templates/intellij-environment.sh.j2"
+      dest: "/etc/profile.d/intellij-environment.sh"
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      mode: 0555
+  when: jvm_intellij_share_jdk
+
+- name: Remove IntelliJ's Embedded JDK
+  become: no
+  file:
+      path: "{{ansible_user_dir}}/{{base_software_directory}}/idea/jre"
+      state: absent
+  when: jvm_intellij_share_jdk
+
+- name: Download Charles Tarball
+  become: no
+  get_url:
+      url: "https://www.charlesproxy.com/assets/release/{{jvm_charles_version}}/charles-proxy-{{jvm_charles_version}}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{base_download_directory}}/charles-proxy-{{jvm_charles_version}}.tar.gz"
+      mode: 0444
+  when: jvm_charles_install
+
+- name: Uncompress Charles Tarball
+  become: no
+  unarchive:
+      src: "{{ansible_user_dir}}/{{base_download_directory}}/charles-proxy-{{jvm_charles_version}}.tar.gz"
+      dest: "{{ansible_user_dir}}/{{base_software_directory}}"
+      copy: no
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      mode: 0555
+      creates: "{{ansible_user_dir}}/{{base_software_directory}}/charles/doc/EULA.rtf"
+  when: jvm_charles_install
+
+- name: Create Desktop Icon For Charles
+  become: no
+  template:
+      src: "templates/charles.desktop.j2"
+      dest: "{{ansible_user_dir}}/Desktop/charles.desktop"
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      mode: 0755
+  when: jvm_charles_install
+
