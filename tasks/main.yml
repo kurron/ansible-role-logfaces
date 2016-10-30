@@ -19,7 +19,17 @@
       creates: "{{ansible_user_dir}}/{{base_software_directory}}/logFacesClient/about.html"
   when: logfaces_client_install
 
-- name: Create Softlink To logFaces Client 
+- name: Create Softlink To logFaces Client JRE
+  become: no
+  file:
+      src: "{{jdk_global_jdk_directory}}/jre"
+      dest: "{{ansible_user_dir}}/{{base_software_directory}}/logFacesClient/jre"
+      owner: "{{ansible_user_uid}}"
+      group: "{{ansible_user_gid}}"
+      state: link
+  when: logfaces_client_install
+
+- name: Create Softlink To logFaces Client
   become: no
   file:
       src: "{{ansible_user_dir}}/{{base_software_directory}}/logFacesClient"
@@ -28,15 +38,6 @@
       group: "{{ansible_user_gid}}"
       state: link
   when: logfaces_client_install
-
-- name: Create Softlink To logFaces Client JRE
-  become: no
-  file:
-      src: "{{jdk_global_jdk_directory}}/jre"
-      dest: "{{ansible_user_dir}}/{{base_software_directory}}/logfaces/jre"
-      owner: "{{ansible_user_uid}}"
-      group: "{{ansible_user_gid}}"
-      state: link
 
 - name: Create Desktop Icon For logFaces Client
   become: no
