@@ -27,7 +27,8 @@
       owner: "{{ansible_user_uid}}"
       group: "{{ansible_user_gid}}"
       state: link
-  when: logfaces_client_install
+# when: logfaces_client_install
+  when: false
 
 - name: Create Softlink To logFaces Client
   become: no
